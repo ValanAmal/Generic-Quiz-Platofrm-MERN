@@ -1,0 +1,19 @@
+{
+  "challenges": [
+    {
+      "title": "Challenge 3",
+      "description": "Description for challenge 3",
+      "id": "1"
+    },
+    {
+      "id": "2",
+      "title": "Challenge 2",
+      "description": "Description for challenge 2"
+    },
+    {
+      "id": "95f9",
+      "title": "Challenge 1",
+      "description": "Description for challenge 1"
+    }
+  ]
+}
