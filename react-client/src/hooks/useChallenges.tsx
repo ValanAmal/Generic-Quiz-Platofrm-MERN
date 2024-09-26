@@ -16,7 +16,6 @@ export const useChallenges = () => {
         const data = await fetchChallenges();
         setChallenges(data);
       } catch (error) {
-        console.error("Error fetching challenges:", error);
       }
     };
 
@@ -28,7 +27,6 @@ export const useChallenges = () => {
       const updatedChallenges = await updateChallengeApi(updatedChallenge);
       setChallenges(updatedChallenges);
     } catch (error) {
-      console.error("Error updating challenge:", error);
     }
   };
 

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import Navbar from './components/Navbar';
 import MainPage from './pages/MainPage';
@@ -13,24 +13,6 @@ import { useAuth } from './hooks/useAuth';
 const App: React.FC = () => {
   const { isAuthenticated } = useAuth();
   const { challenges, updateChallenge } = useChallenges();
-  const [isAdmin, setIsAdmin] = useState(false);
-  const [authChecked, setAuthChecked] = useState(false);
-
-  useEffect(() => {
-    const checkAuthStatus = () => {
-      const token = localStorage.getItem('token');
-      setAuthChecked(true);
-    };
-    checkAuthStatus();
-  }, []);
-
-  const toggleAdminMode = () => {
-    setIsAdmin(!isAdmin);
-  };
-
-  if (!authChecked) {
-    return <div>Loading...</div>; // Or any loading indicator
-  }
 
   return (
     <Router>

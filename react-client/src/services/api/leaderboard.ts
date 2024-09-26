@@ -21,11 +21,3 @@ export const fetchLeaderboardData = (): Promise<User[]> => {
     setTimeout(() => resolve(users), 500); // Simulate delay
   });
 };
-
-// Simulate saving users to leaderboard (localStorage)
-const saveLeaderboardData = (users: User[]): Promise<void> => {
-  return new Promise((resolve) => {
-    localStorage.setItem("leaderboard", JSON.stringify(users));
-    setTimeout(() => resolve(), 500); // Simulate delay
-  });
-};

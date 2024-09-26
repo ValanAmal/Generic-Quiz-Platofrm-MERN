@@ -1,11 +1,7 @@
 // src/api/challengesApi.ts
-import { Challenge } from "../../types/types"; // Assuming this is correctly set up
+import { Challenge } from "../../types/types";
 import { API_URL } from "./constant";
 
-// Simulate path to JSON in the public folder
-const CHALLENGES_JSON = "../../resources/challenges.json"; // Place the challenges.json in the public directory
-
-// Function to simulate API call to fetch challenges
 export const fetchChallenges = async (): Promise<Challenge[]> => {
   const response = await fetch(`${API_URL}/login`, {
       method: "POST",

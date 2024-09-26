@@ -1,15 +1,7 @@
 import React, { useState } from "react";
-import { useParams, useLocation,useNavigate } from "react-router-dom";
-
-interface Challenge {
-  id: string;
-  title: string;
-  description: string;
-  imageUrl?: string; // If image (optional)
-}
+import { useLocation,useNavigate } from "react-router-dom";
 
 const ChallengePage: React.FC = () => {
-  const { id } = useParams<{ id: string }>();
   const location = useLocation();
   const { challenge } = location.state || {};
   const navigate = useNavigate();
