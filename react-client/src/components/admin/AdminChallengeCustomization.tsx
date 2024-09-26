@@ -12,7 +12,8 @@ interface Challenge {
 const AdminChallengeCustomization: React.FC<{
   challenge: Challenge;
   onUpdate: (updatedChallenge: Challenge) => void;
-}> = ({ challenge, onUpdate }) => {
+  onCancel: () => void;
+}> = ({ challenge, onUpdate, onCancel }) => {
   const [title, setTitle] = useState(challenge.title);
   const [description, setDescription] = useState(challenge.description);
   const [imageUrl, setImageUrl] = useState(challenge.imageUrl || "");
@@ -49,6 +50,9 @@ const AdminChallengeCustomization: React.FC<{
         className="bg-blue-500 text-white p-2 mt-4"
       >
         Update Challenge
+      </button>
+      <button type="button" onClick={onCancel}>
+        Cancel
       </button>
     </div>
   );

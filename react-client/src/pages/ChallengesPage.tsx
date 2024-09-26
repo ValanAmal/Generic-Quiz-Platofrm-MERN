@@ -120,6 +120,32 @@ const ChallengesPage: React.FC = () => {
     }
   };
 
+  // Handling reordering due to DND => Drag n Drop
+  const handleMoveChallenge = (dragIndex: number, hoverIndex: number) => {
+    const reorderedChallenges = [...challenges];
+    const [movedChallenge] = reorderedChallenges.splice(dragIndex, 1);
+    reorderedChallenges.splice(hoverIndex, 0, movedChallenge);
+
+    setChallenges(reorderedChallenges);
+
+    // Send the updated order to the backend (JSON file)
+    fetch("http://localhost:3001/challenges/reorder", {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(reorderedChallenges),
+    })
+      .then((response) => {
+        if (!response.ok) {
+          throw new Error("Failed to reorder challenges");
+        }
+      })
+      .catch((error) => {
+        console.error("Error reordering challenges:", error);
+      });
+  };
+
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-6">Challenges</h1>
@@ -154,6 +180,7 @@ const ChallengesPage: React.FC = () => {
         isAdmin={isAdmin}
         onEditChallenge={handleEditChallenge}
         onDeleteChallenge={handleDeleteChallenge}
+        onMoveChallenge={handleMoveChallenge} // Add the move challenge function here
       />
     </div>
   );

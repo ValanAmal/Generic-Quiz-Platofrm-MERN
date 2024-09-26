@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react";
 import ChallengeList from "../components/layout/ChallengeList";
 import AdminChallengeCustomization from "../components/admin/AdminChallengeCustomization";
 import { Challenge } from "../types/types";
+import { DropResult } from "react-beautiful-dnd"; // Import DropResult
 
 const fetchChallenges = (): Promise<Challenge[]> => {
   return new Promise((resolve) => {
@@ -82,17 +83,26 @@ const AdminDashboard: React.FC = () => {
     setSelectedChallenge(null);
   };
 
+  const handleMoveChallenge = (dragIndex: number, hoverIndex: number) => {
+    const updatedChallenges = [...challenges];
+    const [movedChallenge] = updatedChallenges.splice(dragIndex, 1); // Remove the dragged item
+    updatedChallenges.splice(hoverIndex, 0, movedChallenge); // Insert it at the hover index
+    setChallenges(updatedChallenges); // Update the state
+  };
+
   return (
     <div className="p-6">
       {isEditing && selectedChallenge ? (
         <AdminChallengeCustomization
           challenge={selectedChallenge}
           onUpdate={handleUpdateChallenge}
+          onCancel={handleCancelEdit}
         />
       ) : (
         <ChallengeList
           challenges={challenges}
           isAdmin={true}
+          onMoveChallenge={handleMoveChallenge}
           onEditChallenge={editChallenge}
           onDeleteChallenge={deleteChallenge}
         />
@@ -102,4 +112,3 @@ const AdminDashboard: React.FC = () => {
 };
 
 export default AdminDashboard;
-
