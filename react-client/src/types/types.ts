@@ -1,6 +1,6 @@
 // src/types/types.ts
 export interface Challenge {
-  id: number;
+  id: string;
   title: string;
   description: string;
   points: number;

@@ -11,7 +11,7 @@ const EditChallengePage: React.FC<{
   const navigate = useNavigate();
 
   const challenge = challenges.find(
-    (challenge) => challenge.id === parseInt(id || "0", 10),
+    (challenge) => challenge.id,
   ); // Added a fallback to '0'
 
   const [title, setTitle] = useState("");

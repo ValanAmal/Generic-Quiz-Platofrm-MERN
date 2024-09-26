@@ -1,7 +1,7 @@
 // src/services/api/leaderboard.ts
 // User interface
 interface User {
-  id: number;
+  id: string;
   name: string;
   score: number;
 }
