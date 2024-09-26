@@ -1,18 +1,17 @@
 // src/components/layout/ChallengeCard.tsx
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-
-interface Challenge {
-  id: number;
-  title: string;
-  description: string;
-  images?: string[];
-}
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import { Challenge } from "../../types/types";
 
 interface ChallengeCardProps {
   challenge: Challenge;
   isAdmin: boolean;
-  onEditChallenge: (id: number, updatedTitle: string, updatedDescription: string) => void;
+  onEditChallenge: (
+    id: number,
+    updatedTitle: string,
+    updatedDescription: string,
+    updatedPoints: number,
+  ) => void;
   onDeleteChallenge: (id: number) => void;
 }
 
@@ -25,9 +24,10 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   const [editMode, setEditMode] = useState<boolean>(false);
   const [editTitle, setEditTitle] = useState(challenge.title);
   const [editDescription, setEditDescription] = useState(challenge.description);
+  const [editPoints, setEditPoints] = useState(challenge.points);
 
   const handleSaveClick = () => {
-    onEditChallenge(challenge.id, editTitle, editDescription);
+    onEditChallenge(challenge.id, editTitle, editDescription, editPoints);
     setEditMode(false);
   };
 
@@ -35,17 +35,28 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
     <div className="p-4 bg-white shadow rounded-lg">
       {editMode ? (
         <div>
+          {/* Editable Title */}
           <input
             type="text"
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg mb-2"
           />
+          {/* Editable Discription */}
           <textarea
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg mb-2"
           />
+          {/* Editable Point */}
+          <input
+            type="number"
+            value={editPoints}
+            onChange={(e) => setEditPoints(Number(e.target.value))}
+            className="w-full px-3 py-2 border rounded-lg mb-2"
+            placeholder="Points"
+          />
+          {/* Save and Cancel button */}
           <button
             onClick={handleSaveClick}
             className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
@@ -64,6 +75,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
           <Link to={`/challenges/${challenge.id}`}>
             <h2 className="text-xl font-bold">{challenge.title}</h2>
             <p>{challenge.description}</p>
+            <p>points: {challenge.points}</p>
           </Link>
           {isAdmin && (
             <div className="mt-2">

@@ -1,5 +1,4 @@
 // src/api/challengesApi.ts
-
 import { Challenge } from "../../types/types"; // Assuming this is correctly set up
 
 // Simulate path to JSON in the public folder
@@ -17,11 +16,11 @@ export const fetchChallenges = async (): Promise<Challenge[]> => {
 
 // Function to simulate API call to update a challenge (only in memory in this case)
 export const updateChallengeApi = async (
-  updatedChallenge: Challenge
+  updatedChallenge: Challenge,
 ): Promise<Challenge[]> => {
   let challenges = await fetchChallenges();
   challenges = challenges.map((challenge) =>
-    challenge.id === updatedChallenge.id ? updatedChallenge : challenge
+    challenge.id === updatedChallenge.id ? updatedChallenge : challenge,
   );
 
   // This would be where you'd make a POST/PUT request to update the data in a real backend.
@@ -31,7 +30,7 @@ export const updateChallengeApi = async (
 
 // Function to simulate API call to add a new challenge
 export const addChallengeApi = async (
-  newChallenge: Challenge
+  newChallenge: Challenge,
 ): Promise<Challenge[]> => {
   const challenges = await fetchChallenges();
   challenges.push(newChallenge);

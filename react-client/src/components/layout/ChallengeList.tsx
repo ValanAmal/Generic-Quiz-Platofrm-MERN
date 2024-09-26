@@ -1,18 +1,17 @@
 // src/components/layout/ChallengeList.tsx
-import React from 'react';
-import ChallengeCard from '../common/ChallengeCard';
-
-interface Challenge {
-  id: number;
-  title: string;
-  description: string;
-  images?: string[];
-}
+import React from "react";
+import ChallengeCard from "../common/ChallengeCard";
+import { Challenge } from "../../types/types";
 
 interface ChallengeListProps {
   challenges: Challenge[];
   isAdmin: boolean;
-  onEditChallenge: (id: number, updatedTitle: string, updatedDescription: string) => void;
+  onEditChallenge: (
+    id: number,
+    updatedTitle: string,
+    updatedDescription: string,
+    updatedPoints: number,
+  ) => void;
   onDeleteChallenge: (id: number) => void;
 }
 

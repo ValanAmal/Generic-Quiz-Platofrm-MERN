@@ -1,16 +1,21 @@
-import React, { useState } from 'react';
+// src/components/admin/AdminChallengeCustomization.tsx
+import React, { useState } from "react";
 
 interface Challenge {
   id: number;
   title: string;
   description: string;
   imageUrl?: string;
+  points: number;
 }
 
-const AdminChallengeCustomization: React.FC<{ challenge: Challenge; onUpdate: (updatedChallenge: Challenge) => void; }> = ({ challenge, onUpdate }) => {
+const AdminChallengeCustomization: React.FC<{
+  challenge: Challenge;
+  onUpdate: (updatedChallenge: Challenge) => void;
+}> = ({ challenge, onUpdate }) => {
   const [title, setTitle] = useState(challenge.title);
   const [description, setDescription] = useState(challenge.description);
-  const [imageUrl, setImageUrl] = useState(challenge.imageUrl || '');
+  const [imageUrl, setImageUrl] = useState(challenge.imageUrl || "");
 
   const handleUpdate = () => {
     onUpdate({ ...challenge, title, description, imageUrl });
@@ -39,7 +44,12 @@ const AdminChallengeCustomization: React.FC<{ challenge: Challenge; onUpdate: (u
         className="border p-2 mt-2 w-full"
         placeholder="Image URL"
       />
-      <button onClick={handleUpdate} className="bg-blue-500 text-white p-2 mt-4">Update Challenge</button>
+      <button
+        onClick={handleUpdate}
+        className="bg-blue-500 text-white p-2 mt-4"
+      >
+        Update Challenge
+      </button>
     </div>
   );
 };

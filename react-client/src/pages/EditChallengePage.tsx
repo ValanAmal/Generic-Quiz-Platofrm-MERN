@@ -1,16 +1,21 @@
 // src/components/pages/EditChallengePage.tsx
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
-import { Challenge } from '../types/types'; // Adjust the import path
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
+import { Challenge } from "../types/types"; // Adjust the import path
 
-const EditChallengePage: React.FC<{ challenges: Challenge[]; onUpdateChallenge: (updatedChallenge: Challenge) => void; }> = ({ challenges, onUpdateChallenge }) => {
+const EditChallengePage: React.FC<{
+  challenges: Challenge[];
+  onUpdateChallenge: (updatedChallenge: Challenge) => void;
+}> = ({ challenges, onUpdateChallenge }) => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
-  const challenge = challenges.find(challenge => challenge.id === parseInt(id || '0', 10)); // Added a fallback to '0'
+  const challenge = challenges.find(
+    (challenge) => challenge.id === parseInt(id || "0", 10),
+  ); // Added a fallback to '0'
 
-  const [title, setTitle] = useState('');
-  const [description, setDescription] = useState('');
+  const [title, setTitle] = useState("");
+  const [description, setDescription] = useState("");
 
   useEffect(() => {
     if (challenge) {
@@ -22,7 +27,7 @@ const EditChallengePage: React.FC<{ challenges: Challenge[]; onUpdateChallenge: 
   const handleSave = () => {
     if (challenge) {
       onUpdateChallenge({ ...challenge, title, description });
-      navigate('/challenges'); // Redirect to challenges list after saving
+      navigate("/challenges"); // Redirect to challenges list after saving
     }
   };
 
@@ -43,7 +48,9 @@ const EditChallengePage: React.FC<{ challenges: Challenge[]; onUpdateChallenge: 
         placeholder="Challenge Description"
       />
 
-      <button onClick={handleSave} className="bg-blue-500 text-white p-2">Save</button>
+      <button onClick={handleSave} className="bg-blue-500 text-white p-2">
+        Save
+      </button>
     </div>
   );
 };

@@ -1,6 +1,9 @@
 // src/hooks/useChallenges.tsx
 import { useState, useEffect } from "react";
-import { fetchChallenges, updateChallengeApi } from "../services/api/challengesApi"; // Import API functions
+import {
+  fetchChallenges,
+  updateChallengeApi,
+} from "../services/api/challengesApi"; // Import API functions
 import { Challenge } from "../types/types"; // Define Challenge type
 
 export const useChallenges = () => {

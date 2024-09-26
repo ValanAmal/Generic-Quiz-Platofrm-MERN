@@ -1,36 +1,47 @@
 // src/pages/AdminDashboard.tsx
-import React, { useState, useEffect } from 'react';
-import ChallengeList from '../components/layout/ChallengeList';
-import AdminChallengeCustomization from '../components/admin/AdminChallengeCustomization';
-
-interface Challenge {
-  id: number;
-  title: string;
-  description: string;
-}
+import React, { useState, useEffect } from "react";
+import ChallengeList from "../components/layout/ChallengeList";
+import AdminChallengeCustomization from "../components/admin/AdminChallengeCustomization";
+import { Challenge } from "../types/types";
 
 const fetchChallenges = (): Promise<Challenge[]> => {
   return new Promise((resolve) => {
-    const storedChallenges = localStorage.getItem('challenges');
-    const challenges = storedChallenges ? JSON.parse(storedChallenges) : [
-      { id: 1, title: 'Challenge 1', description: 'Description of challenge 1' },
-      { id: 2, title: 'Challenge 2', description: 'Description of challenge 2' },
-      { id: 3, title: 'Challenge 3', description: 'Description of challenge 3' },
-    ];
-    setTimeout(() => resolve(challenges), 500);  // Simulate delay
+    const storedChallenges = localStorage.getItem("challenges");
+    const challenges = storedChallenges
+      ? JSON.parse(storedChallenges)
+      : [
+          {
+            id: 1,
+            title: "Challenge 1",
+            description: "Description of challenge 1",
+          },
+          {
+            id: 2,
+            title: "Challenge 2",
+            description: "Description of challenge 2",
+          },
+          {
+            id: 3,
+            title: "Challenge 3",
+            description: "Description of challenge 3",
+          },
+        ];
+    setTimeout(() => resolve(challenges), 500); // Simulate delay
   });
 };
 
 const saveChallenges = (challenges: Challenge[]): Promise<void> => {
   return new Promise((resolve) => {
-    localStorage.setItem('challenges', JSON.stringify(challenges));
-    setTimeout(() => resolve(), 500);  // Simulate delay
+    localStorage.setItem("challenges", JSON.stringify(challenges));
+    setTimeout(() => resolve(), 500); // Simulate delay
   });
 };
 
 const AdminDashboard: React.FC = () => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
-  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(null);
+  const [selectedChallenge, setSelectedChallenge] = useState<Challenge | null>(
+    null,
+  );
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
@@ -39,7 +50,7 @@ const AdminDashboard: React.FC = () => {
   }, []);
 
   const editChallenge = (id: number) => {
-    const challengeToEdit = challenges.find(challenge => challenge.id === id);
+    const challengeToEdit = challenges.find((challenge) => challenge.id === id);
     if (challengeToEdit) {
       setSelectedChallenge(challengeToEdit);
       setIsEditing(true);
@@ -47,15 +58,17 @@ const AdminDashboard: React.FC = () => {
   };
 
   const deleteChallenge = (id: number) => {
-    const updatedChallenges = challenges.filter(challenge => challenge.id !== id);
+    const updatedChallenges = challenges.filter(
+      (challenge) => challenge.id !== id,
+    );
     saveChallenges(updatedChallenges).then(() => {
       setChallenges(updatedChallenges);
     });
   };
 
   const handleUpdateChallenge = (updatedChallenge: Challenge) => {
-    const updatedChallenges = challenges.map(challenge =>
-      challenge.id === updatedChallenge.id ? updatedChallenge : challenge
+    const updatedChallenges = challenges.map((challenge) =>
+      challenge.id === updatedChallenge.id ? updatedChallenge : challenge,
     );
     saveChallenges(updatedChallenges).then(() => {
       setChallenges(updatedChallenges);
@@ -72,7 +85,10 @@ const AdminDashboard: React.FC = () => {
   return (
     <div className="p-6">
       {isEditing && selectedChallenge ? (
-        <AdminChallengeCustomization challenge={selectedChallenge} onUpdate={handleUpdateChallenge} />
+        <AdminChallengeCustomization
+          challenge={selectedChallenge}
+          onUpdate={handleUpdateChallenge}
+        />
       ) : (
         <ChallengeList
           challenges={challenges}
@@ -86,3 +102,4 @@ const AdminDashboard: React.FC = () => {
 };
 
 export default AdminDashboard;
+
