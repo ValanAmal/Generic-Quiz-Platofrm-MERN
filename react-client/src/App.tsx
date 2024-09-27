@@ -20,6 +20,7 @@ const App: React.FC = () => {
         {isAuthenticated && <Navbar isAuthenticated={isAuthenticated}/>}
         <Routes>
           <Route 
+            index
             path="/" 
             element={isAuthenticated ? <MainPage /> : <Navigate to="/auth" />} 
           />
