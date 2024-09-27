@@ -1,4 +1,3 @@
-// src/components/layout/ChallengeCard.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Challenge } from "../../types/types";
@@ -33,11 +32,16 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log(challenge)
+    console.log(challenge);
     navigate(`/challenges/${challenge.title}`, { state: { challenge } });
   };
+
   return (
-    <div className="p-4 bg-white shadow rounded-lg">
+    <div
+      className="bg-white/30 backdrop-blur-md border border-white/20 rounded-lg p-6 shadow-lg 
+                 max-w-full mx-auto transition-transform transform hover:scale-105 hover:shadow-[0px_0px_15px_5px_rgba(255,255,255,0.4)] 
+                 duration-300 ease-in-out"
+    >
       {editMode ? (
         <div>
           {/* Editable Title */}
@@ -47,13 +51,13 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
             onChange={(e) => setEditTitle(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg mb-2"
           />
-          {/* Editable Discription */}
+          {/* Editable Description */}
           <textarea
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg mb-2"
           />
-          {/* Editable Point */}
+          {/* Editable Points */}
           <input
             type="number"
             value={editPoints}
@@ -77,10 +81,12 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
         </div>
       ) : (
         <div>
-           <div onClick={handleClick}>
-            <h2 className="text-xl font-bold">{challenge.title}</h2>
-            <p>{challenge.description}</p>
-            <p>points: {challenge.points}</p>
+          <div onClick={handleClick}>
+            <h2 className="text-xl text-slate-300 font-bold">
+              {challenge.title}
+            </h2>
+            <p className="text-slate-300">{challenge.description}</p>
+            <p className="text-slate-300">points: {challenge.points}</p>
           </div>
           {isAdmin && (
             <div className="mt-2">

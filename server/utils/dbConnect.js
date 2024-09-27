@@ -1,5 +1,5 @@
-const { MongoClient, ServerApiVersion } = require('mongodb');
-require('dotenv').config();
+const { MongoClient, ServerApiVersion } = require("mongodb");
+require("dotenv").config();
 
 const mongoURI = process.env.MONGODB_URI;
 let db;
@@ -11,13 +11,13 @@ const connectDB = async () => {
         version: ServerApiVersion.v1,
         strict: true,
         deprecationErrors: true,
-      }
+      },
     });
     await client.connect();
-    db = client.db('XPLORE');
-    console.log('Connected to MongoDB');
+    db = client.db("XPLORERS");
+    console.log("Connected to MongoDB");
   } catch (err) {
-    console.error('Failed to connect to MongoDB', err);
+    console.error("Failed to connect to MongoDB", err);
     process.exit(1);
   }
 };

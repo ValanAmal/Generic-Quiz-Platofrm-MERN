@@ -1,5 +1,5 @@
 // components/common/InputField.tsx
-import React from 'react';
+import React from "react";
 
 interface InputFieldProps {
   label: string;
@@ -9,16 +9,22 @@ interface InputFieldProps {
   placeholder?: string;
 }
 
-const InputField: React.FC<InputFieldProps> = ({ label, type, value, onChange, placeholder }) => {
+const InputField: React.FC<InputFieldProps> = ({
+  label,
+  type,
+  value,
+  onChange,
+  placeholder,
+}) => {
   return (
     <div>
-      <label className="block text-gray-700 mb-2">{label}</label>
+      <label className="block text-gray-400 mb-2">{label}</label>
       <input
         type={type}
         value={value}
         onChange={onChange}
         placeholder={placeholder}
-        className="w-full px-4 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-400"
+        className="w-full px-4 py-2 border border-gray-500 rounded-md bg-gray-700 text-white focus:outline-none focus:ring-2 focus:ring-indigo-400"
       />
     </div>
   );

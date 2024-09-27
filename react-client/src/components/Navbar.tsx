@@ -1,6 +1,7 @@
 // src/components/Navbar.tsx
-import React from 'react';
-import { Link } from 'react-router-dom';
+import React from "react";
+import { Link } from "react-router-dom";
+import "../styles/index.css";
 
 interface NavbarProps {
   isAuthenticated: boolean;
@@ -8,32 +9,44 @@ interface NavbarProps {
 
 const Navbar: React.FC<NavbarProps> = ({ isAuthenticated }) => {
   return (
-    <nav className="bg-white shadow-md p-6">
+    <nav className="bg-gray-900 shadow-md p-6 sticky top-0 z-50">
       <div className="container mx-auto flex justify-between items-center">
-        <h1 className="text-2xl font-bold text-gray-800">CTF Platform</h1>
+        <h1 className="text-3xl font-bold glow-text text-white">CTT</h1>
         <div className="space-x-6 text-lg font-medium">
-          <Link to="/" className="hover:text-blue-500 text-gray-800">
+          <Link
+            to="/"
+            className="hover:glow-text text-xl transition-all duration-300 text-gray-300"
+          >
             Home
           </Link>
-          <Link to="/challenges" className="hover:text-blue-500 text-gray-800">
+          <Link
+            to="/challenges"
+            className="hover:glow-text text-xl transition-all duration-300 text-gray-300"
+          >
             Challenges
           </Link>
-          <Link to="/leader" className="hover:text-blue-500 text-gray-800">
+          <Link
+            to="/leader"
+            className="hover:glow-text text-xl transition-all duration-300 text-gray-300"
+          >
             Leaderboard
           </Link>
           {isAuthenticated ? (
             <Link
               to="/auth"
-              className="hover:text-blue-500 text-gray-800"
+              className="hover:glow-text text-xl transition-all duration-300 text-gray-300"
               onClick={() => {
-                localStorage.removeItem('token');
-                window.dispatchEvent(new Event('storage'));
+                localStorage.removeItem("token");
+                window.dispatchEvent(new Event("storage"));
               }}
             >
               Logout
             </Link>
           ) : (
-            <Link to="/auth" className="hover:text-blue-500 text-gray-800">
+            <Link
+              to="/auth"
+              className="hover:text-yellow-500 text-xl text-gray-300"
+            >
               Login
             </Link>
           )}

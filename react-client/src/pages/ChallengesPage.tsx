@@ -9,6 +9,7 @@ const ChallengesPage: React.FC = () => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
   const [isAdmin, setIsAdmin] = useState(false);
   const [showAddChallenge, setShowAddChallenge] = useState(false);
+  const [selectedFilter, setSelectedFilter] = useState<string>("All");
 
   // Fetch challenges from API on component mount
   useEffect(() => {
@@ -149,10 +150,17 @@ const ChallengesPage: React.FC = () => {
       });
   };
 
+  // Function to handle filter changes
+  const handleFilterChange = (filter: string) => {
+    setSelectedFilter(filter);
+  };
+
   return (
-    <div className="p-6">
-      <h1 className="text-2xl font-bold mb-6">Challenges</h1>
-      <ChallengeFilters />
+    <div className="h-screen p-6 bg-gradient-to-br from-gray-800 to-gray-600">
+      <h1 className="text-2xl font-bold glow-text text-white mb-6">
+        Challenges
+      </h1>
+      <ChallengeFilters onFilterChange={handleFilterChange} />
 
       <div className="flex justify-end mb-4">
         <button
@@ -177,15 +185,15 @@ const ChallengesPage: React.FC = () => {
       {isAdmin && showAddChallenge && (
         <AddChallengeForm onAddChallenge={handleAddChallenge} />
       )}
-      {challenges && challenges.length>0 &&(
-      <ChallengeList
-        challenges={challenges}
-        isAdmin={isAdmin}
-        onEditChallenge={handleEditChallenge}
-        onDeleteChallenge={handleDeleteChallenge}
-        onMoveChallenge={isAdmin ? handleMoveChallenge : () => {}} // Add the move challenge function here
-      />
-    )}
+      {challenges && challenges.length > 0 && (
+        <ChallengeList
+          challenges={challenges}
+          isAdmin={isAdmin}
+          onEditChallenge={handleEditChallenge}
+          onDeleteChallenge={handleDeleteChallenge}
+          onMoveChallenge={isAdmin ? handleMoveChallenge : () => {}} // Add the move challenge function here
+        />
+      )}
     </div>
   );
 };
