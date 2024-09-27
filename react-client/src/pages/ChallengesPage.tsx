@@ -12,7 +12,13 @@ const ChallengesPage: React.FC = () => {
 
   // Fetch challenges from API on component mount
   useEffect(() => {
-    fetch(`${API_URL}/challenges`)
+    fetch(`${API_URL}/challenges`,{
+      method: 'GET',
+          headers: {
+            'Content-Type': 'application/json', 
+            'token': localStorage.getItem('token') || ''
+          }
+    })
       .then((response) => response.json())
       .then((data) => {
         setChallenges(data);

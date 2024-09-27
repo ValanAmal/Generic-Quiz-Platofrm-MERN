@@ -7,6 +7,7 @@ interface Challenge {
   description: string;
   imageUrl?: string;
   points: number;
+  _id:string;
 }
 
 const AdminChallengeCustomization: React.FC<{

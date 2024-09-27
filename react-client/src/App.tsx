@@ -30,7 +30,7 @@ const App: React.FC = () => {
           />
           <Route 
             path="/challenges/:id" 
-            element={isAuthenticated ? <ChallengePage /> : <Navigate to="/auth" />} 
+            element={ <ChallengePage />} 
           />
           <Route 
             path="/challenges/edit/:id" 

@@ -1,4 +1,3 @@
-// src/components/layout/ChallengeCard.tsx
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { Challenge } from "../../types/types";
@@ -30,30 +29,29 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
     onEditChallenge(challenge.id, editTitle, editDescription, editPoints);
     setEditMode(false);
   };
+
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log(challenge)
-    navigate(`/challenges/${challenge.title}`, { state: { challenge } });
+    console.log(challenge._id)
+    navigate(`/challenges/${challenge._id}`);
   };
+
   return (
     <div className="p-4 bg-white shadow rounded-lg">
       {editMode ? (
         <div>
-          {/* Editable Title */}
           <input
             type="text"
             value={editTitle}
             onChange={(e) => setEditTitle(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg mb-2"
           />
-          {/* Editable Discription */}
           <textarea
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg mb-2"
           />
-          {/* Editable Point */}
           <input
             type="number"
             value={editPoints}
@@ -61,7 +59,6 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
             className="w-full px-3 py-2 border rounded-lg mb-2"
             placeholder="Points"
           />
-          {/* Save and Cancel button */}
           <button
             onClick={handleSaveClick}
             className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
@@ -77,10 +74,10 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
         </div>
       ) : (
         <div>
-           <div onClick={handleClick}>
+          <div onClick={handleClick}>
             <h2 className="text-xl font-bold">{challenge.title}</h2>
             <p>{challenge.description}</p>
-            <p>points: {challenge.points}</p>
+            <p>Points: {challenge.points}</p>
           </div>
           {isAdmin && (
             <div className="mt-2">

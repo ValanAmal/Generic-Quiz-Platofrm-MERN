@@ -10,9 +10,7 @@ const port = 5000;
 const app = express();
 
 const corsOptions = {
-    origin: 'http://localhost:3000',
-    methods: ['GET', 'POST' , 'OPTIONS'],
-    allowedHeaders: ['Content-Type', 'Authorization', 'X-Requested-With'],
+  origin: '*',
 };
 
 app.use(cors(corsOptions));

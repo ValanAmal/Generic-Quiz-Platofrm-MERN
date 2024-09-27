@@ -7,27 +7,30 @@ router.get('/challenges', async (req, res) => {
   try {
     const userId = req.headers['token'];
     let db = getDB();
-    if(db){}
-    else{
+    
+    if (!db) {
       connectDB();
       db = getDB();
     }
-    const userExists = await db.collection('auth').findOne({ userId: userId });
-    if(userExists){
-    const events = await db.collection('events')
-      .find()
-      .toArray();
-      console.log(events[0]._id)
-      const questions = await db.collection('challenges').find({event_id:events[0]._id}).toArray();
-    res.json(questions);
-    }
-    else{
-      res.status(401).json({error:"user not validated"})
+    console.log(userId)
+    const userExists = await db.collection('auth').findOne({ _id: new ObjectId(userId) });
+    if (userExists) {
+      const completedQuestions = userExists.completed_questions || [];
+      const events = await db.collection('events').find().toArray();
+      console.log(events[0]._id);
+      const questions = await db.collection('challenges').find({ event_id: events[0]._id }).toArray();
+      const filteredQuestions = questions.filter(question => !completedQuestions.includes(question._id.toString()));
+
+      res.json(filteredQuestions);
+    } else {
+      res.status(401).json({ error: "User not validated" });
     }
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // GET a question by ID
 router.get('/challenges/:id', async (req, res) => {
@@ -39,11 +42,12 @@ router.get('/challenges/:id', async (req, res) => {
       connectDB();
       db = getDB();
     }
-    const userExixts = await db.collection('auth')
-    .findOne({userId: new ObjectId(userId)})
-    if(userExixts){
+    const userExists = await db.collection('auth').findOne({ _id: new ObjectId(userId) });
+    console.log(userExists)
+    console.log(userId)
+    if(userExists){
     const questionId = req.params.id;
-    const question = await db.collection('events').findOne({ _id: new ObjectId(questionId) });
+    const question = await db.collection('challenges').findOne({ _id: new ObjectId(questionId) });
 
     if (!question) {
       return res.status(404).json({ error: 'question not found' });
@@ -59,33 +63,49 @@ router.get('/challenges/:id', async (req, res) => {
   }
 });
 
-router.get('/verify/:id', async (req, res) => {
+router.post('/verify/:id', async (req, res) => {
   try {
     const userId = req.headers['token'];
     let db = getDB();
-    if(db){}
-    else{
+    
+    if (!db) {
       connectDB();
       db = getDB();
     }
-    const userExixts = await db.collection('auth')
-    .findOne({userId: userId})
-    if(userExixts){
-    const questionId = req.body.id;
-    const answer = req.body.flag;
-    const question = await db.collection('challenges').findOne({ _id: new ObjectId(questionId) });
-    if (question && answer && question.flag===answer){
-      return res.status(202).json({message:'Hooray Correct Answer'})
-    }else {
-      return res.status(404).json({ error: 'question not found' });
+
+    const userExists = await db.collection('auth').findOne({ _id: new ObjectId(userId) });
+    
+    if (userExists) {
+      const questionId = req.params.id;
+      const answer = req.body.flag;
+      console.log(questionId, answer);
+      
+      const question = await db.collection('challenges').findOne({ _id: new ObjectId(questionId) });
+      
+      if (question && question.flag === answer) {
+        const updateResult = await db.collection('auth').updateOne(
+          { _id: new ObjectId(userId) },
+          { 
+            $addToSet: { completed_questions: questionId }
+          }
+        );  
+        console.log(updateResult)
+        if (updateResult.modifiedCount > 0) {
+          return res.status(202).json({ message: 'Hooray Correct Answer' });
+        } else {
+          return res.status(500).json({ error: 'Failed to update completed questions' });
+        }
+      } else {
+        return res.status(402).json({ error: 'Question not found or incorrect answer' });
+      }
+    } else {
+      return res.status(401).json({ message: 'User not validated' });
     }
-  }else{
-    res.status(401).json({message : 'user not validated'})
-  }
   } catch (err) {
-    console.log(err)
+    console.log(err);
     res.status(500).json({ error: 'An error occurred while fetching the question' });
   }
 });
+
 
 module.exports = router;
