@@ -25,14 +25,14 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   const [editDescription, setEditDescription] = useState(challenge.description);
   const [editPoints, setEditPoints] = useState(challenge.points);
 
-  const handleSaveClick = () => {
+  const navigate = useNavigate();
+
+  const handleSaveClick = (): void => {
     onEditChallenge(challenge.id, editTitle, editDescription, editPoints);
     setEditMode(false);
   };
 
-  const navigate = useNavigate();
-
-  const handleClick = () => {
+  const handleClick = (): void => {
     console.log(challenge._id);
     navigate(`/challenges/${challenge._id}`);
   };
@@ -51,13 +51,11 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
             onChange={(e) => setEditTitle(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg mb-2"
           />
-          {/* Editable Description */}
           <textarea
             value={editDescription}
             onChange={(e) => setEditDescription(e.target.value)}
             className="w-full px-3 py-2 border rounded-lg mb-2"
           />
-          {/* Editable Points */}
           <input
             type="number"
             value={editPoints}
@@ -85,11 +83,7 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
               {challenge.title}
             </h2>
             <p className="text-slate-300">{challenge.description}</p>
-            <p className="text-slate-300">points: {challenge.points}</p>
-          <div onClick={handleClick}>
-            <h2 className="text-xl font-bold">{challenge.title}</h2>
-            <p>{challenge.description}</p>
-            <p>Points: {challenge.points}</p>
+            <p className="text-slate-300">Points: {challenge.points}</p>
           </div>
           {isAdmin && (
             <div className="mt-2">
@@ -114,3 +108,4 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 };
 
 export default ChallengeCard;
+
