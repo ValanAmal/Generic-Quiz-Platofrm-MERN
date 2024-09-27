@@ -1,11 +1,9 @@
-// src/components/layout/Leaderboard.tsx
 import React, { useState, useEffect } from 'react';
-import { fetchLeaderboardData } from '../../services/api/leaderboard';
 import { API_URL } from '../../services/api/constant';
 
 interface User {
-  id: string;
-  name: string;
+  userId: string; // Change to userId to match your API response
+  email: string;  // Assuming you're fetching the email from your API
   score: number;
 }
 
@@ -23,23 +21,22 @@ const Leaderboard: React.FC = () => {
           throw new Error('Failed to fetch leaderboard data');
         }
         const fetchedUsers: User[] = await response.json();
-        const sortedUsers = fetchedUsers.sort((a, b) => b.score - a.score);
-        setUsers(sortedUsers);
+        setUsers(fetchedUsers); // Store fetched users directly
       } catch (error) {
         console.error(error);
       } finally {
-        setLoading(false); 
+        setLoading(false);
       }
     };
 
     fetchData();
   }, []);
-
+  const filteredAndSortedUsers = [...users]
+    .filter(user => user.score > 0) // Filter out users with score of zero
+    .sort((a, b) => {
+      return sortOrder === 'desc' ? b.score - a.score : a.score - b.score;
+    });
   // Sort users by score based on sortOrder
-  const sortedUsers = [...users].sort((a, b) => {
-    return sortOrder === 'desc' ? b.score - a.score : a.score - b.score;
-  });
-
   return (
     <div className="p-6">
       <h2 className="text-xl font-bold">Leaderboard</h2>
@@ -56,9 +53,9 @@ const Leaderboard: React.FC = () => {
         <div>Loading...</div>
       ) : (
         <div className="leaderboard-list">
-          {sortedUsers.map((user) => (
-            <div key={user.id} className="flex justify-between p-4 border-b">
-              <span>{user.name}</span>
+          {filteredAndSortedUsers.map((user) => (
+            <div key={user.userId} className="flex justify-between p-4 border-b">
+              <span>{user.email}</span> {/* Displaying email instead of name */}
               <span>{user.score}</span>
             </div>
           ))}

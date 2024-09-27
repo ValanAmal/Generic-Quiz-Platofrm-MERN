@@ -72,22 +72,24 @@ router.post('/verify/:id', async (req, res) => {
       connectDB();
       db = getDB();
     }
+
     const userExists = await db.collection('auth').findOne({ _id: new ObjectId(userId) });
     if (!userExists) {
       return res.status(401).json({ message: 'User not validated' });
     }
+
     const questionId = req.params.id;
     const answer = req.body.flag;
-    
+
     const question = await db.collection('challenges').findOne({ _id: new ObjectId(questionId) });
-    
+
     if (!question || question.flag !== answer) {
       return res.status(402).json({ error: 'Question not found or incorrect answer' });
     }
 
-    if (userExists && userExists.completed_questions ) {
-      if(userExists.completed_questions.includes(questionId)){
-      return res.status(403).json({ message: 'Not allowed: question already completed' });
+    if (userExists && userExists.completed_questions) {
+      if (userExists.completed_questions.includes(questionId)) {
+        return res.status(403).json({ message: 'Not allowed: question already completed' });
       }
     }
 
@@ -95,34 +97,46 @@ router.post('/verify/:id', async (req, res) => {
       { _id: new ObjectId(userId) },
       { $addToSet: { completed_questions: questionId } }
     );
+
     const eventId = question.event_id;
     const scoreToAdd = question.points;
-    const leaderboardUpdateResult = await db.collection('leaderboard').findOneAndUpdate(
+
+    // Find if the user has already completed this question for the event
+    const participant = await db.collection('leaderboard').findOne(
       { event_id: eventId, 'participants.userId': new ObjectId(userId) },
-      { 
-        $inc: { 'participants.$.score': scoreToAdd }, // Increment existing user's score
-      },
-      { returnDocument: 'after' }
+      { projection: { 'participants.$': 1 } }
     );
 
-    try {
-      if(!leaderboardUpdateResult.value){}}
-    catch(err){
-      
-      const newLeaderboard = {
-        event_id: eventId,
-        participants: [{ userId: new ObjectId(userId), score: scoreToAdd }],
-        totalScore: scoreToAdd,
-      };
-      const insertResult = await db.collection('leaderboard').insertOne(newLeaderboard);
-      
-      if (insertResult.insertedId) {
-        return res.status(201).json({ message: 'Leaderboard created and participant added', newScore: scoreToAdd });
-      } else {
-        return res.status(500).json({ error: 'Failed to create leaderboard' });
+    if (participant && participant.participants.length > 0) {
+      // The user already exists in the leaderboard for this event
+      if (participant.participants[0].completed_questions && participant.participants[0].completed_questions.includes(questionId)) {
+        return res.status(403).json({ message: 'Not allowed: question already completed' });
       }
-    } finally {
-      return res.status(202).json({ message: 'Hooray Correct Answer'});
+    }
+
+    // Update the leaderboard: add the participant if they don't already exist
+    const leaderboardUpdateResult = await db.collection('leaderboard').findOneAndUpdate(
+      { event_id: eventId },
+      {
+        $setOnInsert: { event_id: eventId, totalScore: 0 }, // Initialize the event leaderboard if it doesn't exist
+        $addToSet: { participants: { userId: new ObjectId(userId), score: 0, completed_questions: [] } }, // Add user if not already in participants
+      },
+      { upsert: true, returnDocument: 'after' } // Create the leaderboard if it doesn't exist
+    );
+
+    // Increment the user's score and add the completed question
+    const scoreUpdateResult = await db.collection('leaderboard').updateOne(
+      { event_id: eventId, 'participants.userId': new ObjectId(userId) },
+      {
+        $inc: { 'participants.$.score': scoreToAdd, totalScore: scoreToAdd }, // Increment user's score and total score
+        $addToSet: { 'participants.$.completed_questions': questionId } // Mark the question as completed by the user
+      }
+    );
+
+    if (scoreUpdateResult.matchedCount > 0) {
+      return res.status(202).json({ message: 'Correct answer! Score updated.', newScore: scoreToAdd });
+    } else {
+      return res.status(500).json({ error: 'Failed to update score in leaderboard' });
     }
   } catch (err) {
     console.log(err);
