@@ -1,16 +1,10 @@
 {
   "challenges": [
     {
-      "title": "Challenge 1",
-      "description": "Description for challenge 1",
+      "title": "Challenge 3",
+      "description": "Description for challenge 3",
       "points": 100,
-      "id": "81bb"
-    },
-    {
-      "id": "8ff7",
-      "title": "Challenge 2",
-      "description": "Description for challenge 2",
-      "points": 100
+      "id": "8ff7"
     },
     {
       "id": "66e4",

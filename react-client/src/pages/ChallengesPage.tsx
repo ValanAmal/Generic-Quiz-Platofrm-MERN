@@ -122,6 +122,8 @@ const ChallengesPage: React.FC = () => {
 
   // Handling reordering due to DND => Drag n Drop
   const handleMoveChallenge = (dragIndex: number, hoverIndex: number) => {
+    if (!isAdmin) return;
+
     const reorderedChallenges = [...challenges];
     const [movedChallenge] = reorderedChallenges.splice(dragIndex, 1);
     reorderedChallenges.splice(hoverIndex, 0, movedChallenge);
@@ -180,7 +182,7 @@ const ChallengesPage: React.FC = () => {
         isAdmin={isAdmin}
         onEditChallenge={handleEditChallenge}
         onDeleteChallenge={handleDeleteChallenge}
-        onMoveChallenge={handleMoveChallenge} // Add the move challenge function here
+        onMoveChallenge={isAdmin ? handleMoveChallenge : () => {}} // Add the move challenge function here
       />
     </div>
   );
