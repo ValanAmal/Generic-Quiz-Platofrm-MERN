@@ -3,16 +3,16 @@ const cors = require("cors");
 
 const { connectDB } = require("./utils/dbConnect");
 
-const authRoutes = require("./routes/auth");
-const questionRoutes = require("./routes/question");
-const port = 5001;
+const authRoutes = require('./routes/auth');
+const questionRoutes =  require('./routes/question');
+const leaderboardRoutes = require('./routes/leaderboard')
+
+const port = 5000;
 
 const app = express();
 
 const corsOptions = {
-  origin: "http://localhost:3000",
-  methods: ["GET", "POST", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization", "X-Requested-With"],
+  origin: '*',
 };
 
 app.use(cors(corsOptions));
@@ -20,6 +20,7 @@ app.use(express.json());
 
 app.use(authRoutes);
 app.use(questionRoutes);
+app.use(leaderboardRoutes);
 
 const startServer = async () => {
   await connectDB();

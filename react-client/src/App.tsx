@@ -20,6 +20,7 @@ const App: React.FC = () => {
         {isAuthenticated && <Navbar isAuthenticated={isAuthenticated}/>}
         <Routes>
           <Route 
+            index
             path="/" 
             element={isAuthenticated ? <MainPage /> : <Navigate to="/auth" />} 
           />
@@ -30,7 +31,7 @@ const App: React.FC = () => {
           />
           <Route 
             path="/challenges/:id" 
-            element={isAuthenticated ? <ChallengePage /> : <Navigate to="/auth" />} 
+            element={ <ChallengePage />} 
           />
           <Route 
             path="/challenges/edit/:id" 

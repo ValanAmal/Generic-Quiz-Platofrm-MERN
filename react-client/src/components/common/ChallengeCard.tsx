@@ -29,11 +29,12 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
     onEditChallenge(challenge.id, editTitle, editDescription, editPoints);
     setEditMode(false);
   };
+
   const navigate = useNavigate();
 
   const handleClick = () => {
-    console.log(challenge);
-    navigate(`/challenges/${challenge.title}`, { state: { challenge } });
+    console.log(challenge._id);
+    navigate(`/challenges/${challenge._id}`);
   };
 
   return (
@@ -44,7 +45,6 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
     >
       {editMode ? (
         <div>
-          {/* Editable Title */}
           <input
             type="text"
             value={editTitle}
@@ -65,7 +65,6 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
             className="w-full px-3 py-2 border rounded-lg mb-2"
             placeholder="Points"
           />
-          {/* Save and Cancel button */}
           <button
             onClick={handleSaveClick}
             className="bg-blue-500 text-white px-4 py-2 rounded mr-2"
@@ -87,6 +86,10 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
             </h2>
             <p className="text-slate-300">{challenge.description}</p>
             <p className="text-slate-300">points: {challenge.points}</p>
+          <div onClick={handleClick}>
+            <h2 className="text-xl font-bold">{challenge.title}</h2>
+            <p>{challenge.description}</p>
+            <p>Points: {challenge.points}</p>
           </div>
           {isAdmin && (
             <div className="mt-2">

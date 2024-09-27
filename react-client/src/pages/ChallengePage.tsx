@@ -1,27 +1,73 @@
-import React, { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import React, { useState, useEffect } from "react";
+import { useParams, useNavigate, useLocation } from "react-router-dom";
+import { Challenge } from "../types/types";
+import { API_URL } from "../services/api/constant";
 
 const ChallengePage: React.FC = () => {
   const location = useLocation();
-  const { challenge } = location.state || {};
+  const id = location.pathname.split('/')[2];
   const navigate = useNavigate();
+  const [challenge, setChallenge] = useState<Challenge | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
+  const [flag, setFlag] = useState<string>('');
+  const [submissionStatus, setSubmissionStatus] = useState<string | null>(null);
 
-  const handleFlagSubmission = (e: React.FormEvent) => {
+  useEffect(() => {
+    const fetchChallenge = async () => {
+      try {
+        const response = await fetch(`${API_URL}/challenges/${id}`, {
+          method: 'GET',
+          headers: {
+            'Content-Type': 'application/json', 
+            'token': localStorage.getItem('token') || ''
+          }
+        });
+        
+        if (!response.ok) {
+          throw new Error('Failed to fetch challenge');
+        }
+        const data = await response.json();
+        setChallenge(data);
+      } catch (err) {
+        setError('Error fetching challenge data');
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchChallenge();
+  }, [id]);
+
+  const handleFlagSubmission = async (e: React.FormEvent) => {
     e.preventDefault();
-    // Handle flag submission logic here
+    setSubmissionStatus(null); // Reset previous status
+
+    try {
+      const response = await fetch(`${API_URL}/verify/${id}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'token': localStorage.getItem('token') || ''
+        },
+        body: JSON.stringify({ flag })
+      });
+
+      if (!response.ok) {
+        throw new Error('Failed to submit flag');
+      }
+
+      const result = await response.json();
+      alert('Flag submitted successfully!');
+      navigate(-1)
+    } catch (err) {
+      setSubmissionStatus('Wrong flag');
+    }
   };
 
-  // Handling local and remote file downloads
-  const [fileUrl, setFileUrl] = useState<string | null>(null);
-  // Sample files
-  const localFileUrl = "/sample.pdf";
-  const remoteFileUrl = "https://example.com/sample.pdf";
-  // Toggle between local and remote files
-  const toggleFileSource = () => {
-    setFileUrl((prevUrl) =>
-      prevUrl === localFileUrl ? remoteFileUrl : localFileUrl,
-    );
-  };
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>{error}</div>;
+  if (!challenge) return <div>Challenge not found</div>;
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-800 to-gray-600 flex items-center justify-center">
