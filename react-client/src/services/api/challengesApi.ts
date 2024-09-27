@@ -1,12 +1,15 @@
 // src/api/challengesApi.ts
-import { Challenge } from "../../types/types"; // Assuming this is correctly set up
+import { Challenge } from "../../types/types";
+import { API_URL } from "./constant";
 
-// Simulate path to JSON in the public folder
-const CHALLENGES_JSON = "../../resources/challenges.json"; // Place the challenges.json in the public directory
-
-// Function to simulate API call to fetch challenges
 export const fetchChallenges = async (): Promise<Challenge[]> => {
-  const response = await fetch(CHALLENGES_JSON);
+  const response = await fetch(`${API_URL}/login`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        "Token" :localStorage.getItem('token') || ''
+      },
+});
   if (!response.ok) {
     throw new Error("Failed to fetch challenges");
   }
@@ -40,7 +43,7 @@ export const addChallengeApi = async (
 };
 
 // Function to simulate API call to delete a challenge
-export const deleteChallengeApi = async (id: number): Promise<Challenge[]> => {
+export const deleteChallengeApi = async (id: string): Promise<Challenge[]> => {
   let challenges = await fetchChallenges();
   challenges = challenges.filter((challenge) => challenge.id !== id);
 

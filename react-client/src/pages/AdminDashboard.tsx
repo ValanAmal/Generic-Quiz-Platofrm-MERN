@@ -50,7 +50,7 @@ const AdminDashboard: React.FC = () => {
     fetchChallenges().then((challenges) => setChallenges(challenges));
   }, []);
 
-  const editChallenge = (id: number) => {
+  const editChallenge = (id: string) => {
     const challengeToEdit = challenges.find((challenge) => challenge.id === id);
     if (challengeToEdit) {
       setSelectedChallenge(challengeToEdit);
@@ -58,7 +58,7 @@ const AdminDashboard: React.FC = () => {
     }
   };
 
-  const deleteChallenge = (id: number) => {
+  const deleteChallenge = (id: string) => {
     const updatedChallenges = challenges.filter(
       (challenge) => challenge.id !== id,
     );

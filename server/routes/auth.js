@@ -18,10 +18,10 @@ router.post('/login', async (req, res) => {
       const user = await db.collection('auth').findOne({ email: email });
   
       if (!user) {
-        return res.status(401).json({ error: 'Invalid email or password' });
+        return res.status(401).json({ error: 'Invalid User' });
       }
       if (user.password !== password) {
-        return res.status(401).json({ error: 'Invalid email or password' });
+        return res.status(401).json({ error: 'Invalid password' });
       }
       const isAdmin = user.admin === 1;
   

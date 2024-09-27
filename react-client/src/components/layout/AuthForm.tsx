@@ -5,8 +5,10 @@ import Button from '../common/Button';
 import ErrorMessage from '../ui/ErrorMessage';
 import { login } from '../../services/api/auth';
 import { useUserContext } from '../../context/UserContext';
+import { useNavigate } from 'react-router-dom';
 
 const AuthForm: React.FC = () => {
+  const navigate=useNavigate();
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
@@ -16,9 +18,10 @@ const AuthForm: React.FC = () => {
     setErrorMessage(null);
     try {
       const response = await login(email, password);
-      if (response.success) {
-        setAdmin(response.isAdmin); // Assuming the API returns the isAdmin flag
-        alert('Login successful!');
+      if (response.userId) {
+        setAdmin(response.admin); // Assuming the API returns the isAdmin flag
+        window.dispatchEvent(new Event('storage'));
+        navigate('/')
       } else {
         setErrorMessage(response.message || 'Login failed. Please try again.');
       }

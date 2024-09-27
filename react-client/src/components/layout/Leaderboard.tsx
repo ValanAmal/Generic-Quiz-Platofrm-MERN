@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { fetchLeaderboardData } from '../../services/api/leaderboard';
 
 interface User {
-  id: number;
+  id: string;
   name: string;
   score: number;
 }

@@ -10,12 +10,12 @@ interface ChallengeListProps {
   isAdmin: boolean;
   onMoveChallenge: (dragIndex: number, hoverIndex: number) => void; // New prop to handle reorder
   onEditChallenge: (
-    id: number,
+    id: string,
     updatedTitle: string,
     updatedDescription: string,
     updatedPoints: number,
   ) => void;
-  onDeleteChallenge: (id: number) => void;
+  onDeleteChallenge: (id: string) => void;
 }
 
 const ItemType = "CHALLENGE"; // Unique key for drag type
@@ -27,12 +27,12 @@ const DraggableChallenge: React.FC<{
   onMoveChallenge: (dragIndex: number, hoverIndex: number) => void;
   isAdmin: boolean;
   onEditChallenge: (
-    id: number,
+    id: string,
     updatedTitle: string,
     updatedDescription: string,
     updatedPoints: number,
   ) => void;
-  onDeleteChallenge: (id: number) => void;
+  onDeleteChallenge: (id: string) => void;
 }> = ({
   challenge,
   index,

@@ -1,18 +1,18 @@
 // src/components/layout/ChallengeCard.tsx
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Challenge } from "../../types/types";
 
 interface ChallengeCardProps {
   challenge: Challenge;
   isAdmin: boolean;
   onEditChallenge: (
-    id: number,
+    id: string,
     updatedTitle: string,
     updatedDescription: string,
     updatedPoints: number,
   ) => void;
-  onDeleteChallenge: (id: number) => void;
+  onDeleteChallenge: (id: string) => void;
 }
 
 const ChallengeCard: React.FC<ChallengeCardProps> = ({
@@ -30,7 +30,12 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
     onEditChallenge(challenge.id, editTitle, editDescription, editPoints);
     setEditMode(false);
   };
+  const navigate = useNavigate();
 
+  const handleClick = () => {
+    console.log(challenge)
+    navigate(`/challenges/${challenge.title}`, { state: { challenge } });
+  };
   return (
     <div className="p-4 bg-white shadow rounded-lg">
       {editMode ? (
@@ -72,11 +77,11 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
         </div>
       ) : (
         <div>
-          <Link to={`/challenges/${challenge.id}`}>
+           <div onClick={handleClick}>
             <h2 className="text-xl font-bold">{challenge.title}</h2>
             <p>{challenge.description}</p>
             <p>points: {challenge.points}</p>
-          </Link>
+          </div>
           {isAdmin && (
             <div className="mt-2">
               <button

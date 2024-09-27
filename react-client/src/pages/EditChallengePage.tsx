@@ -1,17 +1,16 @@
 // src/components/pages/EditChallengePage.tsx
 import React, { useState, useEffect } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { Challenge } from "../types/types"; // Adjust the import path
+import { useNavigate } from "react-router-dom";
+import { Challenge } from "../types/types";
 
 const EditChallengePage: React.FC<{
   challenges: Challenge[];
   onUpdateChallenge: (updatedChallenge: Challenge) => void;
 }> = ({ challenges, onUpdateChallenge }) => {
-  const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
 
   const challenge = challenges.find(
-    (challenge) => challenge.id === parseInt(id || "0", 10),
+    (challenge) => challenge.id,
   ); // Added a fallback to '0'
 
   const [title, setTitle] = useState("");
@@ -27,7 +26,7 @@ const EditChallengePage: React.FC<{
   const handleSave = () => {
     if (challenge) {
       onUpdateChallenge({ ...challenge, title, description });
-      navigate("/challenges"); // Redirect to challenges list after saving
+      navigate("/challenges");
     }
   };
 

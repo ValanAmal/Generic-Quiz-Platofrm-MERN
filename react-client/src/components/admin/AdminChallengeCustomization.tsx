@@ -2,7 +2,7 @@
 import React, { useState } from "react";
 
 interface Challenge {
-  id: number;
+  id: string;
   title: string;
   description: string;
   imageUrl?: string;

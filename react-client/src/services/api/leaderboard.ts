@@ -1,7 +1,7 @@
 // src/services/api/leaderboard.ts
 // User interface
 interface User {
-  id: number;
+  id: string;
   name: string;
   score: number;
 }
@@ -19,13 +19,5 @@ export const fetchLeaderboardData = (): Promise<User[]> => {
           { id: 4, name: "Dave", score: 70 },
         ];
     setTimeout(() => resolve(users), 500); // Simulate delay
-  });
-};
-
-// Simulate saving users to leaderboard (localStorage)
-const saveLeaderboardData = (users: User[]): Promise<void> => {
-  return new Promise((resolve) => {
-    localStorage.setItem("leaderboard", JSON.stringify(users));
-    setTimeout(() => resolve(), 500); // Simulate delay
   });
 };

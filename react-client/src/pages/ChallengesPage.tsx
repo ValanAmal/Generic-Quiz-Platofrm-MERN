@@ -3,6 +3,7 @@ import ChallengeList from "../components/layout/ChallengeList";
 import AddChallengeForm from "../components/admin/AddChallengeForm";
 import ChallengeFilters from "../components/ui/ChallengeFilters";
 import { Challenge } from "../types/types";
+import { API_URL } from "../services/api/constant";
 
 const ChallengesPage: React.FC = () => {
   const [challenges, setChallenges] = useState<Challenge[]>([]);
@@ -11,7 +12,7 @@ const ChallengesPage: React.FC = () => {
 
   // Fetch challenges from API on component mount
   useEffect(() => {
-    fetch("http://localhost:3001/challenges")
+    fetch(`${API_URL}/challenges`)
       .then((response) => response.json())
       .then((data) => {
         setChallenges(data);
@@ -36,7 +37,7 @@ const ChallengesPage: React.FC = () => {
       points, // Include points here
     };
 
-    fetch("http://localhost:3001/challenges", {
+    fetch(`${API_URL}/challenges`, {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -53,7 +54,7 @@ const ChallengesPage: React.FC = () => {
   };
 
   const handleEditChallenge = (
-    id: number,
+    id: string,
     updatedTitle: string,
     updatedDescription: string,
     updatedPoints: number,
@@ -64,7 +65,7 @@ const ChallengesPage: React.FC = () => {
       points: updatedPoints, // Include points here
     };
 
-    fetch(`http://localhost:3001/challenges/${id}`, {
+    fetch(`${API_URL}/challenges/${id}`, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json",
@@ -96,7 +97,7 @@ const ChallengesPage: React.FC = () => {
       });
   };
 
-  const handleDeleteChallenge = (id: number) => {
+  const handleDeleteChallenge = (id: string) => {
     const confirmDelete = window.confirm(
       "Are you sure you want to delete this challenge?",
     );
@@ -176,7 +177,7 @@ const ChallengesPage: React.FC = () => {
       {isAdmin && showAddChallenge && (
         <AddChallengeForm onAddChallenge={handleAddChallenge} />
       )}
-
+      {challenges && challenges.length>0 &&(
       <ChallengeList
         challenges={challenges}
         isAdmin={isAdmin}
@@ -184,6 +185,7 @@ const ChallengesPage: React.FC = () => {
         onDeleteChallenge={handleDeleteChallenge}
         onMoveChallenge={isAdmin ? handleMoveChallenge : () => {}} // Add the move challenge function here
       />
+    )}
     </div>
   );
 };
