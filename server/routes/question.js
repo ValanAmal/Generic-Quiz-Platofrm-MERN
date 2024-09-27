@@ -83,15 +83,22 @@ router.post('/verify/:id', async (req, res) => {
       const question = await db.collection('challenges').findOne({ _id: new ObjectId(questionId) });
       
       if (question && question.flag === answer) {
+        if (typeof userExists.score === 'undefined') {
+          await db.collection('auth').updateOne(
+            { _id: new ObjectId(userId) },
+            { $set: { score: 0 } }
+          );
+        }
         const updateResult = await db.collection('auth').updateOne(
           { _id: new ObjectId(userId) },
           { 
-            $addToSet: { completed_questions: questionId }
+            $addToSet: { completed_questions: questionId },
+            $inc: { score: question.points }
           }
         );  
-        console.log(updateResult)
+        console.log(updateResult);
         if (updateResult.modifiedCount > 0) {
-          return res.status(202).json({ message: 'Hooray Correct Answer' });
+          return res.status(202).json({ message: 'Hooray Correct Answer', newScore: userExists.score + question.points });
         } else {
           return res.status(500).json({ error: 'Failed to update completed questions' });
         }
