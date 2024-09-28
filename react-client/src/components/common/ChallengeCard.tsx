@@ -33,8 +33,8 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
   };
 
   const handleClick = (): void => {
-    console.log(challenge._id);
-    navigate(`/challenges/${challenge._id}`);
+    console.log(challenge.id);
+    navigate(`/challenges/${challenge.id}`);
   };
 
   return (
@@ -108,4 +108,3 @@ const ChallengeCard: React.FC<ChallengeCardProps> = ({
 };
 
 export default ChallengeCard;
-
