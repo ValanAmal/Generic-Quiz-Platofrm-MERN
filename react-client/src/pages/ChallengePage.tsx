@@ -67,7 +67,12 @@ const ChallengePage: React.FC = () => {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
+  if (loading)
+    return (
+      <div className="min-h-screen bg-gradient-to-br text-2xl glow-text text-white font-bold from-gray-800 to-gray-600 flex items-center justify-center">
+        Loading...
+      </div>
+    );
   if (error) return <div>{error}</div>;
   if (!challenge) return <div>Challenge not found</div>;
 
@@ -97,7 +102,7 @@ const ChallengePage: React.FC = () => {
             type="text"
             value={flag}
             onChange={(e) => setFlag(e.target.value)}
-            placeholder="Enter your flag"
+            placeholder="Flag format: FLAG{...}"
             className="border p-2 w-full"
             required
           />

@@ -1,2 +1,1 @@
-export const API_URL = "https://heavy-one.vercel.app";
-
+export const API_URL = "http://localhost:5001";
