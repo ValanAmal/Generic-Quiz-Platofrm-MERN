@@ -1,4 +1,3 @@
-// src/pages/ChallengesPage.txt
 import React, { useState, useEffect } from "react";
 import ChallengeList from "../components/layout/ChallengeList";
 import AddChallengeForm from "../components/admin/AddChallengeForm";
@@ -14,12 +13,12 @@ const ChallengesPage: React.FC = () => {
 
   // Fetch challenges from API on component mount
   useEffect(() => {
-    fetch(`${API_URL}/challenges`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        token: localStorage.getItem("token") || "",
-      },
+    fetch(`${API_URL}/challenges`,{
+      method: 'GET',
+          headers: {
+            'Content-Type': 'application/json', 
+            'token': localStorage.getItem('token') || ''
+          }
     })
       .then((response) => response.json())
       .then((data) => {

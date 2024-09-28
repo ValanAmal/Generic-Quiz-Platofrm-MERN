@@ -3,16 +3,16 @@ const cors = require("cors");
 
 const { connectDB } = require("./utils/dbConnect");
 
-const authRoutes = require("./routes/auth");
-const questionRoutes = require("./routes/question");
-const leaderboardRoutes = require("./routes/leaderboard");
+const authRoutes = require('./routes/auth');
+const questionRoutes =  require('./routes/question');
+const leaderboardRoutes = require('./routes/leaderboard')
 
-const port = 5001;
+const port = 5000;
 
 const app = express();
 
 const corsOptions = {
-  origin: "*",
+  origin: '*',
 };
 
 app.use(cors(corsOptions));
