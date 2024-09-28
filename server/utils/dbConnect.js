@@ -14,7 +14,7 @@ const connectDB = async () => {
       },
     });
     await client.connect();
-    db = client.db("XPLORE");
+    db = client.db("XPLORERS");
     console.log("Connected to MongoDB");
   } catch (err) {
     console.error("Failed to connect to MongoDB", err);

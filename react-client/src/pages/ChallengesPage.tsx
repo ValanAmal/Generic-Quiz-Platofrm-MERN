@@ -167,6 +167,16 @@ const ChallengesPage: React.FC = () => {
       <h1 className="text-2xl font-bold glow-text text-white mb-6">
         Challenges
       </h1>
+      <ChallengeFilters onFilterChange={handleFilterChange} />
+
+      <div className="flex justify-end mb-4">
+        <button
+          onClick={toggleAdminMode}
+          className="bg-blue-500 text-white px-4 py-2 rounded"
+        >
+          {isAdmin ? "Switch to User Mode" : "Switch to Admin Mode"}
+        </button>
+      </div>
 
       {isAdmin && (
         <div className="mb-4">
