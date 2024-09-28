@@ -18,7 +18,7 @@ router.get('/challenges', async (req, res) => {
       const completedQuestions = userExists.completed_questions || [];
       const events = await db.collection('events').find().toArray();
       console.log(events[0]._id);
-      const questions = await db.collection('challenges').find({ event_id: events[0]._id }).toArray();
+      const questions = await db.collection('challenges').find({ event_id: events[0]._id },{ projection: { title: 1, description: 1, points: 1 } }).toArray();
       const filteredQuestions = questions.filter(question => !completedQuestions.includes(question._id.toString()));
 
       res.json(filteredQuestions);
@@ -47,7 +47,11 @@ router.get('/challenges/:id', async (req, res) => {
     console.log(userId)
     if(userExists){
     const questionId = req.params.id;
-    const question = await db.collection('challenges').findOne({ _id: new ObjectId(questionId) });
+    const question = await db.collection('challenges').findOne(
+      { _id: new ObjectId(questionId) },
+      { projection: { title: 1, description: 1, points: 1 } }
+    );
+    
 
     if (!question) {
       return res.status(404).json({ error: 'question not found' });
