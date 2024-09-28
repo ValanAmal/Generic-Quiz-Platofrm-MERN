@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 import { useParams, useNavigate, useLocation } from "react-router-dom";
 import { Challenge } from "../types/types";
 import { API_URL } from "../services/api/constant";
+import { ArrowLeftIcon } from "@heroicons/react/outline";
+import "../styles/index.css";
 
 const ChallengePage: React.FC = () => {
   const location = useLocation();
@@ -72,12 +74,14 @@ const ChallengePage: React.FC = () => {
   return (
     <div className="min-h-screen bg-gradient-to-br from-gray-800 to-gray-600 flex items-center justify-center">
       <div className="bg-white/30 backdrop-blur-md rounded-lg shadow-lg p-6 max-w-lg w-full">
-        <button
+        <div
           onClick={() => navigate(-1)}
-          className="bg-blue-500 text-white px-4 py-2 rounded mb-4"
+          className="cursor-pointer flex items-center text-blue-500 font-bold"
         >
-          BACK
-        </button>
+          <ArrowLeftIcon className="w-5 h-5 mr-2 text-white" />
+          <span className="text-white glow-text text-xl">Back</span>
+        </div>
+        <br></br>
         <h1 className="text-2xl font-bold text-white mb-2">
           {challenge.title}
         </h1>
@@ -85,7 +89,9 @@ const ChallengePage: React.FC = () => {
           <img src={challenge.imageUrl} alt="Challenge" className="my-4" />
         )}
         <p className="text-white mb-4">{challenge.description}</p>
-        <p>Points: {challenge.points}</p>
+        <p className="text-white font-bold glow-text">
+          Points: {challenge.points}
+        </p>
         <form onSubmit={handleFlagSubmission} className="mt-4">
           <input
             type="text"
@@ -95,9 +101,10 @@ const ChallengePage: React.FC = () => {
             className="border p-2 w-full"
             required
           />
+          <br></br>
           <button
             type="submit"
-            className="bg-blue-500 hover:glow-button text-white p-2 mt-2 w-full rounded"
+            className="bg-gray hover:bg-white text-white hover:text-black font-bold glow-button p-2 mt-2 w-full rounded"
           >
             Submit Flag
           </button>
